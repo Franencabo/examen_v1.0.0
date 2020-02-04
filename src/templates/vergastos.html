@@ -1,0 +1,33 @@
+{% extends 'layout.html' %}
+
+<!-- HEADER -->
+{% block header %}
+<div class="titular">
+ <p>{{ session['nombre'] }}</p>
+</div>
+{% endblock %}
+
+<!-- MAIN -->
+{% block main %}
+{% for i in range(0,len) %}
+<div class="vergastos">
+    <p class="vergastos-fecha">{{ datos[i].fecha }}</p>
+    <h5 class="vergastos-titulo">{{ datos[i].titulo }}</h5>
+    <p class="vergastos-texto">{{ datos[i].texto }}</p>
+</div>
+<div class="verBotones">
+    <a href="{{ url_for('actualizar',id=datos[i]._id, titulo=datos[i].titulo,fecha=datos[i].fecha, texto=datos[i].texto) }}"
+        class="verBotones-actualizar"><img src="{{ url_for('static', filename='img/actualizar.svg') }}" alt=""></a>
+    <form class="verBotones-borrar" action="/borrar" method='POST'>
+        <input type="hidden" name="id" value="{{ datos[i]._id }}">
+        <button type="submit"><img src="{{ url_for('static', filename='img/borrar.svg') }}" alt=""></button>
+    </form>
+</div>
+{% endfor %}
+{% endblock %}
+
+{% block footer %}
+<a href="/" class="boton form-boton"><img src="{{ url_for('static', filename='img/crear.svg') }}" alt=""></a>
+<a href="/ver" class="enlace"><img src="{{ url_for('static', filename='img/ver.svg') }}" alt=""></a>
+
+{% endblock %}

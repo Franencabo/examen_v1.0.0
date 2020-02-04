@@ -1,0 +1,45 @@
+{% extends 'layout.html' %}
+<!-- HEADER -->
+{% block header %}
+<div class="titular">
+    
+        <p>{{ session['nombre'] }}</p>
+    </div>
+    
+    
+
+{% endblock %}
+
+<!-- MAIN -->
+{% block main %}
+
+
+<form   class="form" action="/" method='POST'>
+    
+    <h3 class="mensaje">{{ mensaje }}</h3>
+
+    <input type="hidden" name="fecha" id="" value="{{ fecha }}">
+    <div class="abajo-form">
+    <ul>
+        {% for i in range(17) %}
+        <li></li>
+        {% endfor %}
+    </ul>
+    </div>
+    <div class="arriba-form">
+    <input class="form-titulo" type="text" name="titulo">
+    <textarea class="form-texto" name="texto" id="texto" cols="30" rows="22">
+    </textarea>
+    </div>
+    
+    {% endblock %}
+    {% block footer %}
+
+   
+    <button class= "boton form-boton" type="submit"><img src="{{ url_for('static', filename='img/crear.svg') }}" alt=""></button>
+    <a href="/ver" class="enlace"><img src="{{ url_for('static', filename='img/ver.svg') }}" alt=""></a>
+</form>
+
+{% endblock %}
+
+<!-- FOOTER -->

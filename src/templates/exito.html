@@ -1,0 +1,15 @@
+{% extends 'layout.html' %}
+{% block  header %}
+<h1 class="exito">{{ mensaje }}</h1>
+{% endblock %}
+
+{% block main %}
+{% endblock %}
+
+
+{% block footer %}
+<a href="/" class="boton form-boton" ><img src="{{ url_for('static', filename='img/crear.svg') }}"
+    alt=""></a>
+<a href="/ver" class="enlace"><img src="{{ url_for('static', filename='img/ver.svg') }}" alt=""></a>
+
+{% endblock %}

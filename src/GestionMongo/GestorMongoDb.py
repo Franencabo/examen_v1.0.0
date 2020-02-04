@@ -18,24 +18,34 @@ class GestorMongoDb:
             self.cliente = MongoClient(
                 self.MONGO_URL_ATLAS, ssl_cert_reqs=False)
             self.db = self.cliente[db]
-            self.coleccion = self.db[coleccion]
+            self.coleccion_coche = self.db[coleccion]
+            self.coleccion_usuarios = self.db['usuarios']
+    
            
         except:
             raise Exception("Fallo en la base de datos.")
 
     def nuevo_registro(self, nick, email, password):
         fecha = datetime.now()
-        registrar = self.coleccion.insert_one({
+        registrar = self.coleccion_usuarios.insert_one({
             "nick": nick,
             "email": email,
             "password": password,
-            "fecha": datetime.isocalendar(fecha)
+            "fecha": fecha
         })
 
     def busqueda_por_email(self, email):
-        busqueda_por_email = list(self.coleccion.find({'email': email}))
+        busqueda_por_email = list(self.coleccion_usuarios.find({'email': email}))
         return busqueda_por_email
 
+    def creargastos(self, titulo, texto):
+        fecha = datetime.now()
+        creargastos = self.coleccion_coche.insert_one({'fecha':fecha, 'titulo': titulo,  'texto':texto})
+        return creargastos
+    
+    def vergastos_ordenados(self):
+        vergastos = self.coleccion_coche.find({}).sort("fecha", 1)
+        return vergastos
     
 
 
