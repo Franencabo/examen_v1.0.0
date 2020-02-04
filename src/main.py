@@ -1,11 +1,19 @@
 from flask import Flask
 from flask import render_template, request, redirect, url_for
-from GestionMongo.GestorMongoDb import gestormongo
-
 from flask import session
 from datetime import datetime
+from pymongo import MongoClient
+from bson import ObjectId
 
 import os
+
+MONGO_ULR_ATLAS = 'mongodb+srv://Franencabo:Aerobictotal2019@cluster0-8p1xr.mongodb.net/test?retryWrites=true&w=majority'
+
+client = MongoClient(MONGO_ULR_ATLAS, ssl_cert_reqs = False)
+db = client['gastos']
+collection_usuarios = db['usuarios']
+collection_coche = db['coche']
+
 
 app = Flask(__name__)
 app.secret_key = 'gastos'
@@ -30,12 +38,15 @@ def login():
         password = request.form.get('password')
 
         # comprobamos si el email está en la base de datos
-        busqueda_por_email = gestormongo.busqueda_por_email(email)
-        
+        busqueda_por_email = list(collection_usuarios.find({'email': email}))
         # sino está lo registramos
         if nick != "" and email != "" and password !="":
             if len(busqueda_por_email) == 0:
-                nuevo_registro = gestormongo.nuevo_registro(nick, email, password)
+                nuevo_registro = collection_usuarios.insert_one({
+            "nick": nick,
+            "email": email,
+            "password": password
+        })
                 session['nombre'] = nick
                 session['email'] = email
                 session['password'] = password
@@ -61,7 +72,7 @@ def creargastos():
         texto = request.form.get('texto')
         
         if texto != "":
-            nuevogasto = gestormongo.creargastos(fecha,cantidad,titulo,lugar,texto)
+            nuevogasto = collection_coche.insert_one({'fecha':fecha, 'cantidad': cantidad, 'titulo': titulo, 'lugar':lugar, 'texto':texto})
             return render_template('exito.html', mensaje=mensaje)
         else:
             mensaje = "La nota no puede estar vacía."
@@ -80,7 +91,7 @@ def creargastos():
 def vergastos():
     resultados=""
     if request.method == 'GET':
-        resultados = gestormongo.vergastos_ordenados()
+        resultados = collection_coche.find({}).sort("fecha", 1)
         lista = []
         if resultados != None:
             for elemento in resultados:
@@ -90,11 +101,35 @@ def vergastos():
     return render_template('vergastos.html')
 
 
+@app.route('/actualizargastos/<string:id>,<string:titulo>,<string:fecha>,<string:texto>', methods=['GET'])
+@app.route('/actualizargastos', methods=['POST'])
+def actualizar(id=None, fecha=None, titulo=None, texto=None):
+    
+    
+    # fecha = request.args.get('fecha')
+    # texto = request.args.get('texto')
+    
+    if request.method == 'POST':
+        mensaje = "Actualizado con éxito"
+        id = request.form.get('id')
+        nuevotitulo = request.form.get('nuevo_titulo')
+        nuevotexto = request.form.get('nuevo_texto')
+        nuevafecha = request.form.get('nueva_fecha')
+
+        print(nuevotexto)
+        resultadonew = collection_coche.update_one({"_id": ObjectId(id)},{"$set": {"fecha": nuevafecha, "titulo":nuevotitulo, "texto" : nuevotexto}})
+        
+        return render_template('exito.html', mensaje=mensaje)
+    else:
+        return render_template('actualizar.html', id=id, fecha=fecha, titulo=titulo, texto=texto)
+    return render_template('actualizar.html')
+
+
 @app.route('/salir', methods =['GET','POST'])
 def salir():
     if request.method =='POST':
         session.clear()
-        return redirect(url_for('index'))
+        return render_template('index.html')
     return render_template("salir.html")
     
     

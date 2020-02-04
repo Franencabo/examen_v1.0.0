@@ -15,17 +15,16 @@ class GestorMongoDb:
         self.coleccion_coche : Collection = None
 
 
-    def conectarDB(self, db, coleccion):
-        try:
-            self.cliente = MongoClient(
-                self.MONGO_URL_ATLAS, ssl_cert_reqs=False)
-            self.db = self.cliente[db]
-            self.coleccion_coche = self.db[coleccion]
-            self.coleccion_usuarios = self.db['usuarios']
+    def conectarDB(self, db):
+        
+        self.cliente = MongoClient(
+            self.MONGO_URL_ATLAS, ssl_cert_reqs=False)
+        self.db = self.cliente[db]
+        self.coleccion_coche = self.db['coche']
+        self.coleccion_usuarios = self.db['usuarios']
     
            
-        except:
-            raise Exception("Fallo en la base de datos.")
+
 
     def nuevo_registro(self, nick, email, password):
         fecha = datetime.now()
@@ -54,4 +53,4 @@ class GestorMongoDb:
 
 
 gestormongo = GestorMongoDb()
-gestormongo.conectarDB(db="gastos", coleccion="coche")
+gestormongo.conectarDB(db="gastos")

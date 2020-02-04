@@ -18,7 +18,7 @@
     <p class="vergastos-texto">{{ datos[i].texto }}</p>
 </div>
 <div class="verBotones">
-    <a href="{{ url_for('actualizar',id=datos[i]._id, titulo=datos[i].titulo,fecha=datos[i].fecha, texto=datos[i].texto) }}"
+    <a href="{{ url_for('actualizar', id=datos[i]._id, cantidad=datos[i].cantidad, titulo=datos[i].titulo, fecha=datos[i].fecha, lugar=datos[i].lugar, texto=datos[i].texto) }}"
         class="verBotones-actualizar"><img src="{{ url_for('static', filename='img/actualizar.svg') }}" alt=""></a>
     <form class="verBotones-borrar" action="/borrar" method='POST'>
         <input type="hidden" name="id" value="{{ datos[i]._id }}">
