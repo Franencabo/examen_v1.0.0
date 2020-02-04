@@ -4,6 +4,8 @@
 {% block header %}
 <div class="titular">
  <p>{{ session['nombre'] }}</p>
+ <a href="/salir">Salir</a>
+ <h4>Todos tus registros</h4>
 </div>
 {% endblock %}
 
@@ -27,7 +29,7 @@
 {% endblock %}
 
 {% block footer %}
-<a href="/" class="boton form-boton"><img src="{{ url_for('static', filename='img/crear.svg') }}" alt=""></a>
-<a href="/ver" class="enlace"><img src="{{ url_for('static', filename='img/ver.svg') }}" alt=""></a>
+<a href="/creargastos" class="boton form-boton"><img src="{{ url_for('static', filename='img/crear.svg') }}" alt=""></a>
+<a href="/vergastos" class="enlace"><img src="{{ url_for('static', filename='img/ver.svg') }}" alt=""></a>
 
 {% endblock %}

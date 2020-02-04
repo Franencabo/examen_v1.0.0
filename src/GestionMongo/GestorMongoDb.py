@@ -11,6 +11,8 @@ class GestorMongoDb:
         self.MONGO_URL_ATLAS = 'mongodb+srv://Franencabo:Aerobictotal2019@cluster0-8p1xr.mongodb.net/test?retryWrites=true&w=majority'
         self.cliente: MongoClient = None
         self.db: Database = None
+        self.coleccion_usuarios: Collection = None
+        self.coleccion_coche : Collection = None
 
 
     def conectarDB(self, db, coleccion):
@@ -38,9 +40,9 @@ class GestorMongoDb:
         busqueda_por_email = list(self.coleccion_usuarios.find({'email': email}))
         return busqueda_por_email
 
-    def creargastos(self, titulo, texto):
+    def creargastos(self, fecha,cantidad, titulo,lugar, texto):
         fecha = datetime.now()
-        creargastos = self.coleccion_coche.insert_one({'fecha':fecha, 'titulo': titulo,  'texto':texto})
+        creargastos = self.coleccion_coche.insert_one({'fecha':fecha, 'cantidad': cantidad, 'titulo': titulo, 'lugar':lugar, 'texto':texto})
         return creargastos
     
     def vergastos_ordenados(self):

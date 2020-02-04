@@ -2,9 +2,11 @@
 <!-- HEADER -->
 {% block header %}
 <div class="titular">
-    
-        <p>{{ session['nombre'] }}</p>
-    </div>
+<p>{{ session['nombre'] }}</p>
+<a href="/salir">Salir</a>
+
+<h4>Nuevo registro</h4>
+</div>
     
     
 
@@ -20,15 +22,15 @@
 
     <input type="hidden" name="fecha" id="" value="{{ fecha }}">
     <div class="abajo-form">
-    <ul>
-        {% for i in range(17) %}
-        <li></li>
-        {% endfor %}
-    </ul>
+    
     </div>
     <div class="arriba-form">
+    <input class = "form-cantidad" type="number" name="cantidad" id="">
     <input class="form-titulo" type="text" name="titulo">
-    <textarea class="form-texto" name="texto" id="texto" cols="30" rows="22">
+    <input class="form-lugar" type="text" name="lugar" id="">
+   
+
+    <textarea class="form-texto" name="texto" id="texto" cols="30" rows="16">
     </textarea>
     </div>
     
@@ -37,7 +39,7 @@
 
    
     <button class= "boton form-boton" type="submit"><img src="{{ url_for('static', filename='img/crear.svg') }}" alt=""></button>
-    <a href="/ver" class="enlace"><img src="{{ url_for('static', filename='img/ver.svg') }}" alt=""></a>
+    <a href="/vergastos" class="enlace"><img src="{{ url_for('static', filename='img/ver.svg') }}" alt=""></a>
 </form>
 
 {% endblock %}

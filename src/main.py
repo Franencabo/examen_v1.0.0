@@ -55,11 +55,13 @@ def creargastos():
     if request.method == 'POST':
         mensaje = "Creado con éxito"
         fecha = request.form.get('fecha')
+        cantidad = request.form.get('cantidad')
         titulo = request.form.get('titulo')
+        lugar = request.form.get('cantidad')
         texto = request.form.get('texto')
         
         if texto != "":
-            nuevogasto = gestormongo.creargastos(titulo,texto)
+            nuevogasto = gestormongo.creargastos(fecha,cantidad,titulo,lugar,texto)
             return render_template('exito.html', mensaje=mensaje)
         else:
             mensaje = "La nota no puede estar vacía."
@@ -87,6 +89,15 @@ def vergastos():
             return render_template('vergastos.html', datos=lista, len=len(lista))
     return render_template('vergastos.html')
 
+
+@app.route('/salir', methods =['GET','POST'])
+def salir():
+    if request.method =='POST':
+        session.clear()
+        return redirect(url_for('index'))
+    return render_template("salir.html")
+    
+    
 
 
 if __name__ == "__main__":
